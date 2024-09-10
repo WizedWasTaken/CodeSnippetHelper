@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CHS.DataAccess.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240908131942_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240910093010_AddLikeTable")]
+    partial class AddLikeTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,6 +45,29 @@ namespace CHS.DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Favorites");
+                });
+
+            modelBuilder.Entity("CHS.Entities.Like", b =>
+                {
+                    b.Property<int>("LikeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LikeId"));
+
+                    b.Property<int>("SnippetId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LikeId");
+
+                    b.HasIndex("SnippetId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("CHS.Entities.Snippet", b =>
@@ -111,7 +134,7 @@ namespace CHS.DataAccess.Migrations
             modelBuilder.Entity("CHS.Entities.Favorite", b =>
                 {
                     b.HasOne("CHS.Entities.Snippet", "Snippet")
-                        .WithMany("Favorites")
+                        .WithMany()
                         .HasForeignKey("SnippetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -119,7 +142,26 @@ namespace CHS.DataAccess.Migrations
                     b.HasOne("CHS.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Snippet");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CHS.Entities.Like", b =>
+                {
+                    b.HasOne("CHS.Entities.Snippet", "Snippet")
+                        .WithMany()
+                        .HasForeignKey("SnippetId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CHS.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Snippet");
@@ -136,11 +178,6 @@ namespace CHS.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("CreatedBy");
-                });
-
-            modelBuilder.Entity("CHS.Entities.Snippet", b =>
-                {
-                    b.Navigation("Favorites");
                 });
 #pragma warning restore 612, 618
         }

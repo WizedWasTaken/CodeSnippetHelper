@@ -8,34 +8,24 @@ namespace CHS.DataAccess
         {
         }
 
-        public Snippet GetByTitle(string title)
+        public List<Snippet> GetAllSortedByPhrase(string phrase)
         {
-            return _context.Snippets.FirstOrDefault(s => s.Title == title);
+            return _context.Snippets.Where(s => s.Title.Contains(phrase)).ToList();
         }
 
-        public Snippet GetByLanguage(Language language)
+        public List<Snippet> GetAllSortedByLanguage(Language language)
         {
-            return _context.Snippets.FirstOrDefault(s => s.Language == language);
+            return _context.Snippets.Where(s => s.Language == language).ToList();
         }
 
-        public Snippet GetByLikes(int likes)
+        public List<Snippet> GetAllSortedByLikes()
         {
-            return _context.Snippets.FirstOrDefault(s => s.Likes == likes);
+            return _context.Snippets.OrderByDescending(s => s.Likes).ToList();
         }
 
-        public Snippet GetByFavorites(int favorites)
+        public List<Snippet> GetAllSortedByUser(User user)
         {
-            return _context.Snippets.FirstOrDefault(s => s.Favorites.Count == favorites);
-        }
-
-        public Snippet GetByFavorites(List<Favorite> favorites)
-        {
-            return _context.Snippets.FirstOrDefault(s => s.Favorites == favorites);
-        }
-
-        public IEnumerable<Snippet> GetByUser(User user)
-        {
-            return _context.Snippets.Where(s => s.CreatedBy == user);
+            return _context.Snippets.Where(s => s.CreatedBy == user).ToList();
         }
     }
 }

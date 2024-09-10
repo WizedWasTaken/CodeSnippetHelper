@@ -10,7 +10,6 @@ namespace CHS.Entities
         private string name;
         private string email;
         private string password;
-        private List<Favorite> favorites;
 
         #endregion Fields
 
@@ -19,13 +18,12 @@ namespace CHS.Entities
         public User()
         { }
 
-        public User(int id, string name, string email, string password, List<Favorite> favorites)
+        public User(int id, string name, string email, string password)
         {
             UserId = id;
             Name = name;
             Email = email;
             Password = password;
-            Favorites = favorites;
         }
 
         #endregion Constructors
@@ -62,12 +60,6 @@ namespace CHS.Entities
         {
             get { return password; }
             set { password = value; }
-        }
-
-        public List<Favorite> Favorites
-        {
-            get { return favorites; }
-            set { favorites = value; }
         }
 
         #endregion Properties

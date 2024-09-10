@@ -1,4 +1,6 @@
-﻿namespace CHS.Entities
+﻿using Microsoft.EntityFrameworkCore.Scaffolding;
+
+namespace CHS.Entities
 {
     public class Snippet
     {

@@ -4,16 +4,14 @@ namespace CHS.DataAccess
 {
     public interface ISnippetRepository : IRepository<Snippet>
     {
-        Snippet GetByTitle(string title);
+        List<Snippet> GetAllSortedByPhrase(string phrase);
 
-        Snippet GetByLanguage(Language language);
+        List<Snippet> GetAllSortedByLanguage(Language language);
 
-        Snippet GetByLikes(int likes);
+        List<Snippet> GetAllSortedByLikes();
 
-        Snippet GetByFavorites(int favorites);
+        //List<Snippet> GetAllSortedByFavorites();
 
-        Snippet GetByFavorites(List<Favorite> favorites);
-
-        IEnumerable<Snippet> GetByUser(User user);
+        List<Snippet> GetAllSortedByUser(User user);
     }
 }

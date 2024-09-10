@@ -1,10 +1,10 @@
 ﻿namespace CHS.Entities
 {
-    public class Favorite
+    public class Like
     {
         #region Fields
 
-        private int favoriteId;
+        private int likeId;
         private User user;
         private Snippet snippet;
 
@@ -12,13 +12,13 @@
 
         #region Constructors
 
-        public Favorite()
+        public Like()
         {
         }
 
-        public Favorite(int id, User user, Snippet snippet)
+        public Like(int id, User user, Snippet snippet)
         {
-            FavoriteId = id;
+            LikeId = id;
             User = user;
             Snippet = snippet;
         }
@@ -27,10 +27,10 @@
 
         #region Properties
 
-        public int FavoriteId
+        public int LikeId
         {
-            get { return favoriteId; }
-            set { favoriteId = value; }
+            get { return likeId; }
+            set { likeId = value; }
         }
 
         public User User
