@@ -10,8 +10,8 @@ namespace CHS.DataAccess
 
         List<Snippet> GetAllSortedByLikes();
 
-        //List<Snippet> GetAllSortedByFavorites();
-
         List<Snippet> GetAllSortedByUser(User user);
+
+        List<Snippet> GetByUser(string username);
     }
 }

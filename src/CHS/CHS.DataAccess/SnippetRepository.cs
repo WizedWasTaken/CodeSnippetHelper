@@ -27,5 +27,10 @@ namespace CHS.DataAccess
         {
             return _context.Snippets.Where(s => s.CreatedBy == user).ToList();
         }
+
+        public List<Snippet> GetByUser(string username)
+        {
+            return _context.Snippets.Where(s => s.CreatedBy.Name == username).ToList();
+        }
     }
 }
