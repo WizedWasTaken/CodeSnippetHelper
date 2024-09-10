@@ -8,18 +8,26 @@
         private string title;
         private string code;
         private string description;
+        private int likes;
+        private User createdBy;
         private Language language;
 
         #endregion Fields
 
         #region Constructors
 
-        public Snippet(int id, string title, string code, string description, Language language)
+        public Snippet()
+        {
+        }
+
+        public Snippet(int id, string title, string code, string description, int likes, User createdBy, Language language)
         {
             SnippetId = id;
             Title = title;
             Code = code;
             Description = description;
+            Likes = likes;
+            CreatedBy = createdBy;
             Language = language;
         }
 
@@ -49,6 +57,18 @@
         {
             get { return description; }
             set { description = value; }
+        }
+
+        public int Likes
+        {
+            get { return likes; }
+            set { likes = value; }
+        }
+
+        public User CreatedBy
+        {
+            get { return createdBy; }
+            set { createdBy = value; }
         }
 
         public Language Language

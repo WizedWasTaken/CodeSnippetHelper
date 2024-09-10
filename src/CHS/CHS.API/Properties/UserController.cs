@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CHS.DataAccess;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 
 namespace CHS.API.Properties
 {
@@ -7,7 +9,11 @@ namespace CHS.API.Properties
     [ApiController]
     public class UserController : ControllerBase
     {
-        public UserController()
-        { }
+        private readonly IUserRepository _repository;
+
+        public UserController(IUserRepository repository)
+        {
+            _repository = repository;
+        }
     }
 }

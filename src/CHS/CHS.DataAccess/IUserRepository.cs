@@ -2,18 +2,8 @@
 
 namespace CHS.DataAccess
 {
-    public interface IUserRepository
+    public interface IUserRepository : IRepository<User>
     {
-        public User GetUserById(int id);
-
-        public User GetUserByEmail(string email);
-
-        public User GetUserByEmailAndPassword(string email, string password);
-
-        public void AddUser(User user);
-
-        public void UpdateUser(User user);
-
-        public void DeleteUser(User user);
+        User GetByEmail(string email);
     }
 }

@@ -10,17 +10,22 @@ namespace CHS.Entities
         private string name;
         private string email;
         private string password;
+        private List<Favorite> favorites;
 
         #endregion Fields
 
         #region Constructors
 
-        public User(int id, string name, string email, string password)
+        public User()
+        { }
+
+        public User(int id, string name, string email, string password, List<Favorite> favorites)
         {
             UserId = id;
             Name = name;
             Email = email;
             Password = password;
+            Favorites = favorites;
         }
 
         #endregion Constructors
@@ -59,6 +64,12 @@ namespace CHS.Entities
             set { password = value; }
         }
 
+        public List<Favorite> Favorites
+        {
+            get { return favorites; }
+            set { favorites = value; }
+        }
+
         #endregion Properties
 
         #region Methods
@@ -69,5 +80,20 @@ namespace CHS.Entities
         }
 
         #endregion Methods
+
+        public bool VerifyPassword(string password)
+        {
+            return password.Length >= 8;
+        }
+
+        public bool VerifyUser(string email, string password)
+        {
+            return Email == email && Password == password;
+        }
+
+        public bool VerifyUser(User user)
+        {
+            return Email == user.Email && Password == user.Password;
+        }
     }
 }

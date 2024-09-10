@@ -9,6 +9,10 @@ namespace CHS.DataAccess
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+        }
+
         public DbSet<User> Users { get; set; }
         public DbSet<Snippet> Snippets { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
