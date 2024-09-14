@@ -12,7 +12,7 @@ namespace CHS.API.Controllers
         private readonly IFavoriteRepository favoriteRepository = favoriteRepository;
 
         [HttpGet]
-        public IActionResult Get([FromBody] Snippet snippet)
+        public IActionResult Get(Snippet snippet)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace CHS.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Favorite favorite)
+        public IActionResult Post(Favorite favorite)
         {
             try
             {
@@ -67,15 +67,15 @@ namespace CHS.API.Controllers
             }
         }
 
-        [HttpGet("snippet")]
-        public IActionResult Snippet([FromBody] Snippet snippet, [FromBody] User user)
+        [HttpPost("snippet")]
+        public IActionResult Snippet(Snippet snippet, User user)
         {
             try
             {
                 favoriteRepository.AddNewFavoriteToSnippet(snippet, user);
                 return Ok("Favorite added successfully");
-            } 
-            catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }

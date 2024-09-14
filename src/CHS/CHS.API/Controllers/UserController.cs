@@ -54,7 +54,7 @@ namespace CHS.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] User user)
+        public IActionResult Post(User user)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace CHS.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] User user)
+        public IActionResult Put(User user)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace CHS.API.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] User user)
+        public IActionResult Login(User user)
         {
             try
             {
@@ -121,7 +121,7 @@ namespace CHS.API.Controllers
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] User user)
+        public IActionResult Register(User user)
         {
             try
             {

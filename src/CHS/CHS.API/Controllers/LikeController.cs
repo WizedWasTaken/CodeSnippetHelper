@@ -40,7 +40,7 @@ namespace CHS.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Like like)
+        public IActionResult Post(Like like)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace CHS.API.Controllers
         }
 
         [HttpGet("snippet")]
-        public IActionResult GetLikesFromPost([FromBody] Snippet snippet)
+        public IActionResult GetLikesFromPost(Snippet snippet)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace CHS.API.Controllers
         }
 
         [HttpPost("snippet")]
-        public IActionResult AddNewLikeToSnippet([FromBody] Snippet snippet, [FromBody] User user)
+        public IActionResult AddNewLikeToSnippet(Snippet snippet, User user)
         {
             try
             {

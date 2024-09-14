@@ -7,11 +7,11 @@ namespace CHS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SnippetRepository : ControllerBase
+    public class SnippetController : ControllerBase
     {
         private readonly ISnippetRepository _snippetRepository;
 
-        public SnippetRepository(ISnippetRepository snippetRepository)
+        public SnippetController(ISnippetRepository snippetRepository)
         {
             _snippetRepository = snippetRepository;
         }
@@ -36,6 +36,10 @@ namespace CHS.API.Controllers
             try
             {
                 var snippet = _snippetRepository.GetById(id);
+                if (snippet == null)
+                {
+                    return NotFound();
+                }
                 return Ok(snippet);
             }
             catch (Exception ex)
@@ -45,12 +49,17 @@ namespace CHS.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Snippet snippet)
+        public IActionResult Post(Snippet snippet)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
                 _snippetRepository.Add(snippet);
-                return Ok();
+                return CreatedAtAction(nameof(Get), new { id = snippet.SnippetId }, snippet);
             }
             catch (Exception ex)
             {
@@ -59,12 +68,17 @@ namespace CHS.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] Snippet snippet)
+        public IActionResult Put(Snippet snippet)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
                 _snippetRepository.Update(snippet);
-                return Ok();
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -78,7 +92,7 @@ namespace CHS.API.Controllers
             try
             {
                 _snippetRepository.Delete(id);
-                return Ok();
+                return NoContent();
             }
             catch (Exception ex)
             {
