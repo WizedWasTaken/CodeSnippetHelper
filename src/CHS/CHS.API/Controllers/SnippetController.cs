@@ -59,7 +59,7 @@ namespace CHS.API.Controllers
             try
             {
                 _snippetRepository.Add(snippet);
-                return CreatedAtAction(nameof(Get), new { id = snippet.SnippetId }, snippet);
+                return CreatedAtAction(nameof(Post), new { id = snippet.SnippetId }, snippet);
             }
             catch (Exception ex)
             {

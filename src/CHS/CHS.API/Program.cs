@@ -33,6 +33,11 @@ namespace CHS.API
                     options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                 });
 
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<ISnippetRepository, SnippetRepository>();
+            builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
+            builder.Services.AddScoped<ILikeRepository, LikeRepository>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -40,7 +45,7 @@ namespace CHS.API
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
+            } 
 
             app.UseHttpsRedirection();
 

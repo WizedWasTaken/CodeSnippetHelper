@@ -7,16 +7,21 @@ namespace CHS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FavoriteController(IFavoriteRepository favoriteRepository) : ControllerBase
+    public class FavoriteController : ControllerBase
     {
-        private readonly IFavoriteRepository favoriteRepository = favoriteRepository;
+        private readonly IFavoriteRepository _favoriteRepository;
+
+        public FavoriteController(IFavoriteRepository favoriteRepository)
+        {
+            _favoriteRepository = favoriteRepository;
+        }
 
         [HttpGet]
-        public IActionResult Get(Snippet snippet)
+        public IActionResult Get([FromQuery] Snippet snippet)
         {
             try
             {
-                var favorites = favoriteRepository.GetFavoritesFromPost(snippet);
+                var favorites = _favoriteRepository.GetFavoritesFromPost(snippet);
                 return Ok(favorites);
             }
             catch (Exception ex)
@@ -30,7 +35,7 @@ namespace CHS.API.Controllers
         {
             try
             {
-                var favorite = favoriteRepository.GetById(id);
+                var favorite = _favoriteRepository.GetById(id);
                 return Ok(favorite);
             }
             catch (Exception ex)
@@ -40,11 +45,11 @@ namespace CHS.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(Favorite favorite)
+        public IActionResult Post([FromBody] Favorite favorite)
         {
             try
             {
-                favoriteRepository.Add(favorite);
+                _favoriteRepository.Add(favorite);
                 return Ok("Favorite added successfully");
             }
             catch (Exception ex)
@@ -58,7 +63,7 @@ namespace CHS.API.Controllers
         {
             try
             {
-                favoriteRepository.Delete(id);
+                _favoriteRepository.Delete(id);
                 return Ok("Favorite deleted successfully");
             }
             catch (Exception ex)
@@ -68,11 +73,11 @@ namespace CHS.API.Controllers
         }
 
         [HttpPost("snippet")]
-        public IActionResult Snippet(Snippet snippet, User user)
+        public IActionResult Snippet([FromBody] Snippet snippet, [FromQuery] User user)
         {
             try
             {
-                favoriteRepository.AddNewFavoriteToSnippet(snippet, user);
+                _favoriteRepository.AddNewFavoriteToSnippet(snippet, user);
                 return Ok("Favorite added successfully");
             }
             catch (Exception ex)

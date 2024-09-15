@@ -82,7 +82,7 @@ namespace CHS.API.Controllers
         }
 
         [HttpPost("snippet")]
-        public IActionResult AddNewLikeToSnippet(Snippet snippet, User user)
+        public IActionResult AddNewLikeToSnippet([FromBody] Snippet snippet, [FromQuery] User user)
         {
             try
             {
