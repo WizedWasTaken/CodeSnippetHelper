@@ -22,6 +22,17 @@ namespace CHS.API
                 options.UseSqlServer(builder.Configuration.GetConnectionString("CONNECTION_STRING"));
             });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend",
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:3000") // Your Next.js app origin
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
+
             builder.Services.AddControllers()
                 // Handle cyclic dependencies in JSON:
                 .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
@@ -39,6 +50,8 @@ namespace CHS.API
             builder.Services.AddScoped<ILikeRepository, LikeRepository>();
 
             var app = builder.Build();
+
+            app.UseCors("AllowFrontend");
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

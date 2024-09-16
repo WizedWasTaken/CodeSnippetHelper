@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
 import Header from "@/components/pages/Header/Header";
 import "./globals.scss";
-import { useSession, getSession, Session } from '@/lib/utils/session';
-import { useEffect } from 'react';
-import { User } from '@/entities/User';
-import Theme from '@/lib/utils/theme-provider';
+import { useSession, getSession, Session } from "@/lib/utils/session";
+import { useEffect } from "react";
+import { User } from "@/entities/User";
+import Theme from "@/lib/utils/theme-provider";
 
 export default function RootLayout({
   children,
@@ -17,11 +17,12 @@ export default function RootLayout({
   useEffect(() => {
     const storedSession = getSession();
 
-    if (storedSession?.user?.UserId) { // Use getter 'UserId' instead of directly accessing 'userId'
+    if (storedSession?.user?.UserId) {
+      // Use getter 'UserId' instead of directly accessing 'userId'
       const userInstance = new User(
-        storedSession.user.UserId,  // Use getter 'UserId'
-        storedSession.user.Name,    // Use getter 'Name'
-        storedSession.user.Email,   // Use getter 'Email'
+        storedSession.user.UserId, // Use getter 'UserId'
+        storedSession.user.Name, // Use getter 'Name'
+        storedSession.user.Email, // Use getter 'Email'
         storedSession.user.Password // Use getter 'Password'
       );
 
@@ -32,8 +33,8 @@ export default function RootLayout({
   }, [session, updateSession]);
 
   return (
-    <html lang="en" className="dark">
-      <body className="antialiased min-h-screen max-w-screen flex flex-col overflow-x-hidden">
+    <html lang="en">
+      <body className="dark antialiased min-h-screen max-w-screen flex flex-col overflow-x-hidden">
         <Theme>
           <Header />
           {children}

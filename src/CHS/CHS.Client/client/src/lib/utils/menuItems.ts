@@ -8,8 +8,8 @@ export const normalMenuItems = [
         path: '/',
     },
     {
-        name: 'Chris',
-        path: '/chris'
+        name: 'Liv',
+        path: '/liv'
     },
     {
         name: 'Simon',

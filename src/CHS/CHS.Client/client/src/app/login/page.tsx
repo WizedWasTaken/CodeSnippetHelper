@@ -9,6 +9,7 @@ import LoggedInAlert from "@/components/alerts/LoggedInAlert";
 
 // Find a solution to session and sign in.
 import { useSession } from "@/lib/utils/session";
+import { User } from "@/entities/User";
 
 /*
  * Login page
@@ -20,21 +21,23 @@ export default function LoginPage() {
   const registerUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-
-    if (!email || !password) {
-      alert("Udfyld venligst alle felter");
-      return;
-    }
+    const userObject = new User(
+      0,
+      "Test",
+      formData.get("email") as string,
+      formData.get("password") as string
+    );
 
     try {
-      const res = await fetch("/api/User/register", {
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/User/register`;
+      const { UserId, Name, Email, Password } = userObject;
+
+      const res = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ UserId, Name, Email, Password }),
       });
 
       if (res.ok) {
@@ -43,9 +46,11 @@ export default function LoginPage() {
       }
 
       const data = await res.json();
-      alert(data.error);
-    } catch (error) {
-      console.error("An error occurred:", error);
+      alert(data);
+    } catch (error: any) {
+      alert(
+        "An error occurred while creating the user. Please try again later."
+      );
     }
   };
 

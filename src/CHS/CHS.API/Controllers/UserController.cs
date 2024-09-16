@@ -129,7 +129,7 @@ namespace CHS.API.Controllers
 
                 if (userDb != null)
                 {
-                    return Conflict();
+                    return Conflict("Denne email findes allerede.");
                 }
 
                 _userRepository.Add(user);

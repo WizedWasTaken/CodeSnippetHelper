@@ -47,11 +47,6 @@ namespace CHS.Entities
             get { return email; }
             set
             {
-                if (VerifyEmail(value))
-                {
-                    throw new InvalidOperationException("Invalid email");
-                }
-
                 email = value;
             }
         }
