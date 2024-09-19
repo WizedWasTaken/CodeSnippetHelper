@@ -8,13 +8,9 @@ export const normalMenuItems = [
         path: '/',
     },
     {
-        name: 'Login',
-        path: '/login',
-    },
-    {
-        name: 'Register',
-        path: '/register',
-    },
+        name: 'Snippets',
+        path: '/snippets',
+    }
 ];
 
 /**
@@ -43,5 +39,16 @@ export const profileMenuItems = [
     {
         name: 'Log ud',
         path: '/signout',
+    },
+];
+
+export const dashboardSideNavItems = [
+    {
+        name: 'Dashboard',
+        path: '/dashboard',
+    },
+    {
+        name: 'Mine Snippets',
+        path: '/dashboard/snippets',
     },
 ];

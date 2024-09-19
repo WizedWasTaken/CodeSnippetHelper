@@ -1,19 +1,25 @@
 version: '3.9'
 
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  frontend:
+    image: chs_frontend:latest
     ports:
-      - "3003:3003" 
+      - "3003:3003"
     environment:
-      - ASPNETCORE_URLS=http://+:3003 
-      - ASPNETCORE_ENVIRONMENT=Production
       - NODE_ENV=production
-      - PORT = 3003
-      - NEXT_PUBLIC_API_URL=https://chs.noahnielsen.dk 
-      - CONNECTION_STRING=Server=db,1444;Database=CHSDB;User Id=sa;Password=yourStrong(!)Password;Encrypt=False;TrustServerCertificate=True;
+      - PORT=3003
+      - NEXT_PUBLIC_API_URL=https://chs.noahnielsen.dk
+    depends_on:
+      - backend
+
+  backend:
+    image: chs_backend:latest
+    ports:
+      - "5004:5004"
+    environment:
+      - ASPNETCORE_URLS=http://+:5004
+      - ASPNETCORE_ENVIRONMENT=Production
+      - CONNECTION_STRING=Server=db,1433;Database=ChsB;User Id=sa;Password=yourStrong(!)Password;Encrypt=False;TrustServerCertificate=True;
     depends_on:
       - db
 
@@ -27,6 +33,11 @@ services:
       - mssql_data:/var/opt/mssql
     ports:
       - "1444:1433"
+    healthcheck:
+      test: [ "CMD-SHELL", "sqlcmd -S localhost -U sa -P yourStrong(!)Password -Q \"SELECT 1\"" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
 volumes:
   mssql_data:

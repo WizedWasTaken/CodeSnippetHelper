@@ -1,45 +1,24 @@
-# Base image for both Node and .NET SDK
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-backend
-WORKDIR /src
+# Use the official .NET SDK 8.0 as a build environment
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /CHS
 
-# Copy the .NET backend source code
+# Copy the .csproj files and restore dependencies
 COPY ["CHS.API/CHS.API.csproj", "CHS.API/"]
 COPY ["CHS.DataAccess/CHS.DataAccess.csproj", "CHS.DataAccess/"]
 COPY ["CHS.Entities/CHS.Entities.csproj", "CHS.Entities/"]
-RUN dotnet restore "./CHS.API/CHS.API.csproj"
+RUN dotnet restore "CHS.API/CHS.API.csproj"
 
-# Copy the remaining backend source code and build
+# Copy the rest of the application code and build the application
 COPY . .
-WORKDIR "/src/CHS.API"
-RUN dotnet build "./CHS.API.csproj" -c Release -o /app/build
-RUN dotnet publish "./CHS.API.csproj" -c Release -o /app/publish
+WORKDIR "/CHS/CHS.API"
+RUN dotnet build "CHS.API.csproj" -c Release -o /app/build
 
-# Build the frontend using Node.js
-FROM node:18-alpine AS build-frontend
+# Publish the application
+FROM build AS publish
+RUN dotnet publish "CHS.API.csproj" -c Release -o /app/publish
+
+# Use the official ASP.NET Core runtime 8.0 as a base image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-
-# Copy the frontend source code and install dependencies
-COPY CHS.Client/client/package*.json ./
-RUN npm install
-
-# Copy the remaining frontend source code and build
-COPY CHS.Client/client/ .
-RUN npm run build
-
-# Final stage: create the runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
-WORKDIR /app
-
-RUN apt-get update && apt-get install -y nodejs npm
-
-# Copy the published backend code
-COPY --from=build-backend /app/publish ./backend
-
-# Copy the built frontend code
-COPY --from=build-frontend /app/.next ./frontend
-
-# Expose ports for both applications
-EXPOSE 5003 3003
-
-# Start both the backend and frontend servers
-CMD ["sh", "-c", "dotnet ./backend/CHS.Api.dll & npm run start --prefix /app/frontend"]
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "CHS.API.dll"]

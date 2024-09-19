@@ -27,7 +27,7 @@ namespace CHS.API
                 options.AddPolicy("AllowFrontend",
                     policy =>
                     {
-                        policy.WithOrigins("http://localhost:3000") // Your Next.js app origin
+                        policy.WithOrigins("http://localhost:3000", "https://chs.noahnielsen.dk") // Your Next.js app origin
                             .AllowAnyHeader()
                             .AllowAnyMethod();
                     });
@@ -51,6 +51,12 @@ namespace CHS.API
 
             var app = builder.Build();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+                context.Database.Migrate();
+            }
+
             app.UseCors("AllowFrontend");
 
             // Configure the HTTP request pipeline.
@@ -58,7 +64,7 @@ namespace CHS.API
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            } 
+            }
 
             app.UseHttpsRedirection();
 
