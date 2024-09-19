@@ -107,7 +107,7 @@ namespace CHS.API.Controllers
                     return NotFound();
                 }
 
-                if (userDb.Password != user.Password)
+                if (!user.VerifyPassword(user.Password, userDb.Password))
                 {
                     return Unauthorized();
                 }

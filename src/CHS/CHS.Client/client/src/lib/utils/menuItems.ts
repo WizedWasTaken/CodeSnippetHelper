@@ -8,13 +8,13 @@ export const normalMenuItems = [
         path: '/',
     },
     {
-        name: 'Liv',
-        path: '/liv'
+        name: 'Login',
+        path: '/login',
     },
     {
-        name: 'Simon',
-        path: '/simon'
-    }
+        name: 'Register',
+        path: '/register',
+    },
 ];
 
 /**
@@ -42,6 +42,6 @@ export const profileMenuItems = [
     },
     {
         name: 'Log ud',
-        path: '/api/auth/signout',
+        path: '/signout',
     },
 ];

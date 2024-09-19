@@ -1,4 +1,5 @@
 ﻿using System.Security.Principal;
+using BCrypt;
 
 namespace CHS.Entities
 {
@@ -68,10 +69,16 @@ namespace CHS.Entities
 
         #endregion Methods
 
-        public bool VerifyPassword(string password)
+        public string HashPassword(string password)
         {
-            return password.Length >= 8;
+            return BCrypt.Net.BCrypt.HashPassword(password);
         }
+
+        public bool VerifyPassword(string password, string hashedPassword)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
+        }
+
 
         public bool VerifyUser(string email, string password)
         {

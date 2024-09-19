@@ -8,14 +8,16 @@ import { cn } from "@/lib/utils/classNames";
 import LoggedInAlert from "@/components/alerts/LoggedInAlert";
 
 // Find a solution to session and sign in.
-import { useSession } from "@/lib/utils/session";
+import { Session, setSession, useSession } from "@/lib/utils/session";
 import { User } from "@/entities/User";
+import { useRouter } from "next/navigation";
 
 /*
  * Login page
  */
 export default function LoginPage() {
   const { session } = useSession();
+  const router = useRouter();
 
   // TODO: Find a way to alert other than using alert
   const registerUser = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,13 +25,13 @@ export default function LoginPage() {
     const formData = new FormData(e.currentTarget);
     const userObject = new User(
       0,
-      "Test",
+      "Log ind",
       formData.get("email") as string,
       formData.get("password") as string
     );
 
     try {
-      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/User/register`;
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/User/login`;
       const { UserId, Name, Email, Password } = userObject;
 
       const res = await fetch(apiUrl, {
@@ -41,12 +43,22 @@ export default function LoginPage() {
       });
 
       if (res.ok) {
-        alert("Bruger oprettet!");
+        const data: any = await res.json();
+        const user = new User(data.userId, data.name, data.email, data.password);
+        setSession(new Session(user));
+        let redirectUrl: string = "/dashboard";
+
+        const params = new URLSearchParams(window.location.search);
+        const redirectParam = params.get("redirect");
+
+        // If 'redirect' parameter exists, use it as the redirect URL
+        if (redirectParam) {
+          redirectUrl = redirectParam;
+        }
+
+        router.push(redirectUrl);
         return;
       }
-
-      const data = await res.json();
-      alert(data);
     } catch (error: any) {
       alert(
         "An error occurred while creating the user. Please try again later."
@@ -90,7 +102,7 @@ export default function LoginPage() {
             type="submit"
             disabled={session ? true : false}
           >
-            Opret Konto &rarr;
+            Log ind &rarr;
             {!session && <BottomGradient />}
           </button>
         </form>

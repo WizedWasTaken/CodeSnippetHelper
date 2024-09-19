@@ -8,6 +8,14 @@ public class UserRepository : Repository<User>, IUserRepository
     {
     }
 
+    new public void Add(User user)
+    {
+        user.Password = user.HashPassword(user.Password);
+
+        _context.Add(user);
+        _context.SaveChanges();
+    }
+
     public User GetByEmail(string email)
     {
         return _context.Users.FirstOrDefault(u => u.Email == email);
