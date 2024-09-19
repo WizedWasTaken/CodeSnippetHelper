@@ -1,7 +1,6 @@
 import NavBar from '@/components/pages/Header/NavComponent';
 import HamburgerMenu from '@/components/pages/Header/HamburgerMenu';
 import { useSession } from '@/lib/utils/session';
-import { h3 } from 'framer-motion/client';
 
 /*
  * Header component with the site title and navigation bar
