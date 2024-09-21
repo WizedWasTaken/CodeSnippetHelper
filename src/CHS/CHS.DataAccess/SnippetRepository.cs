@@ -1,4 +1,5 @@
 ﻿using CHS.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CHS.DataAccess
 {
@@ -6,6 +7,11 @@ namespace CHS.DataAccess
     {
         public SnippetRepository(DataContext context) : base(context)
         {
+        }
+
+        public new IEnumerable<Snippet> GetAll()
+        {
+            return _context.Snippets.Include(s => s.CreatedBy).ToList();
         }
 
         public List<Snippet> GetAllSortedByPhrase(string phrase)

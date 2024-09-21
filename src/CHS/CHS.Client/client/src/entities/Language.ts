@@ -1,4 +1,5 @@
 export enum Language {
+    Any = "Alle sprog",
     CSharp = "CSharp",
     JavaScript = "JavaScript",
     Python = "Python",

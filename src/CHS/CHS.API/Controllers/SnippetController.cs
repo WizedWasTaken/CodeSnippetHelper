@@ -58,7 +58,12 @@ namespace CHS.API.Controllers
 
             try
             {
+                // Ensure the SnippetId is not set so it will be auto-generated
+                snippet.SnippetId = 0; // Set to 0 for non-nullable or use null for nullable identity column
+                snippet.CreatedBy.UserId = 0; // Set to 0 for non-nullable or use null for nullable identity column
+
                 _snippetRepository.Add(snippet);
+
                 return CreatedAtAction(nameof(Post), new { id = snippet.SnippetId }, snippet);
             }
             catch (Exception ex)
