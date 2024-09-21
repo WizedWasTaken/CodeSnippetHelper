@@ -12,6 +12,7 @@ namespace CHS.Entities
         private string description;
         private int likes;
         private User createdBy;
+        private DateTime createdOn;
         private Language language;
 
         #endregion Fields
@@ -22,7 +23,7 @@ namespace CHS.Entities
         {
         }
 
-        public Snippet(int id, string title, string code, string description, int likes, User createdBy, Language language)
+        public Snippet(int id, string title, string code, string description, int likes, User createdBy, DateTime createdOn, Language language)
         {
             SnippetId = id;
             Title = title;
@@ -30,6 +31,7 @@ namespace CHS.Entities
             Description = description;
             Likes = likes;
             CreatedBy = createdBy;
+            CreatedOn = createdOn;
             Language = language;
         }
 
@@ -71,6 +73,12 @@ namespace CHS.Entities
         {
             get { return createdBy; }
             set { createdBy = value; }
+        }
+
+        public DateTime CreatedOn
+        {
+            get { return createdOn; }
+            set { createdOn = value; }
         }
 
         public Language Language

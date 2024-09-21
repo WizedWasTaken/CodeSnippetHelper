@@ -3,12 +3,14 @@ export class User {
     private name: string;
     private email: string;
     private password: string;
+    private createdOn?: Date;
 
-    constructor(userId: number, name: string, email: string, password: string) {
+    constructor(userId: number, name: string, email: string, password: string, createdOn?: Date) {
         this.userId = userId;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.createdOn = createdOn;
     }
 
     public get UserId(): number {
@@ -40,6 +42,14 @@ export class User {
 
     public set Password(password: string) {
         this.password = password;
+    }
+
+    public get CreatedOn(): Date {
+        return this.createdOn;
+    }
+
+    public set CreatedOn(createdOn: Date) {
+        this.createdOn = createdOn;
     }
 
     private verifyEmail(email: string): boolean {

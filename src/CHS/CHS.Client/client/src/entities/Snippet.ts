@@ -9,8 +9,9 @@ export class Snippet {
     private likes: number;
     private createdBy: User;
     private language: Language;
+    private createdOn: Date;
 
-    constructor(snippetId: number, title: string, code: string, description: string, likes: number, createdBy: User, language: Language) {
+    constructor(snippetId: number, title: string, code: string, description: string, likes: number, createdBy: User, language: Language, createdOn: Date) {
         this.snippetId = snippetId;
         this.title = title;
         this.code = code;
@@ -18,6 +19,7 @@ export class Snippet {
         this.likes = likes;
         this.createdBy = createdBy;
         this.language = language;
+        this.createdOn = createdOn;
     }
 
     public get SnippetId(): number {
@@ -70,5 +72,13 @@ export class Snippet {
 
     public set Language(language: Language) {
         this.language = language;
+    }
+
+    public get CreatedOn(): Date {
+        return this.createdOn;
+    }
+
+    public set CreatedOn(createdOn: Date) {
+        this.createdOn = createdOn;
     }
 }

@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function Profile() {
   const session = useSession();
   return (
-    <section className="flex flex-col md:flex-row gap-5 items-center w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input container">
+    <section className="flex justify-start flex-col md:flex-row gap-5 items-center w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input">
       <div className="flex-shrink-0">
         <Image
           src="/profile-pic.png"
@@ -20,7 +20,7 @@ export default function Profile() {
         <h1 className="text-4xl font-bold">
           Velkommen, {session.session?.user.Name.split(" ")[0]}
         </h1>
-        <p className="text-xl text-gray-200">Du har 5 opslag.</p>
+        <p className="text-xl text-gray-200">Du har XX opslag.</p>
       </div>
     </section>
   );

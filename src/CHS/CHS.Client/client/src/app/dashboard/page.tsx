@@ -1,11 +1,18 @@
 import DashboardProfile from "@/components/pages/Dashboard/Profile";
-import UserSnippets from "@/components/pages/Dashboard/UserSnippets";
+import UserStatistics from "@/components/pages/Dashboard/UserStatistics";
 
 export default function Dashboard() {
   return (
-    <main className="flex flex-col flex-grow items-center justify-center w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input">
-      <DashboardProfile />
-      <UserSnippets />
+    <main className="w-full rounded-none shadow-input grid md:grid-cols-2 md:grid-cols-2 gap-4">
+      <div>
+        <DashboardProfile />
+      </div>
+      <div className="md:row-span-2">
+        <UserStatistics />
+      </div>
+      <div className="hidden md:block">
+        <h1>Mere stuff</h1>
+      </div>
     </main>
   );
 }

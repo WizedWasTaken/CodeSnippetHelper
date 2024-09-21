@@ -11,6 +11,7 @@ namespace CHS.Entities
         private string name;
         private string email;
         private string password;
+        private DateTime createdOn;
 
         #endregion Fields
 
@@ -19,12 +20,13 @@ namespace CHS.Entities
         public User()
         { }
 
-        public User(int id, string name, string email, string password)
+        public User(int id, string name, string email, string password, DateTime createdOn)
         {
             UserId = id;
             Name = name;
             Email = email;
             Password = password;
+            CreatedOn = createdOn;
         }
 
         #endregion Constructors
@@ -58,6 +60,22 @@ namespace CHS.Entities
             set { password = value; }
         }
 
+        public DateTime CreatedOn
+        {
+            get { return createdOn; }
+            set
+            {
+                if (value == null)
+                {
+                    createdOn = DateTime.Now;
+                }
+                else
+                {
+                    createdOn = value;
+                }
+            }
+        }
+
         #endregion Properties
 
         #region Methods
@@ -78,7 +96,6 @@ namespace CHS.Entities
         {
             return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
-
 
         public bool VerifyUser(string email, string password)
         {

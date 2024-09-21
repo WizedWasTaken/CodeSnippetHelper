@@ -140,5 +140,19 @@ namespace CHS.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpPost("statistics")]
+        public IActionResult GetStatistics([FromQuery] Statistics typeOfStat, User? user)
+        {
+            try
+            {
+                var statistics = _userRepository.GetStatistics(typeOfStat, user);
+                return Ok(statistics);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

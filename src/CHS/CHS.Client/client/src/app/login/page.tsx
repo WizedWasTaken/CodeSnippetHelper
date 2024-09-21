@@ -44,7 +44,12 @@ export default function LoginPage() {
 
       if (res.ok) {
         const data: any = await res.json();
-        const user = new User(data.userId, data.name, data.email, data.password);
+        const user = new User(
+          data.userId,
+          data.name,
+          data.email,
+          data.password
+        );
         setSession(new Session(user));
         let redirectUrl: string = "/dashboard";
 
