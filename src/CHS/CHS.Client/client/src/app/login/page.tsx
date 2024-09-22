@@ -43,6 +43,7 @@ export default function LoginPage() {
       });
 
       if (res.ok) {
+        alert("Du er nu logget ind!");
         const data: any = await res.json();
         const user = new User(
           data.userId,
@@ -64,6 +65,10 @@ export default function LoginPage() {
         router.push(redirectUrl);
         return;
       }
+
+      alert("Der opstod en fejl under login på brugeren.");
+
+      return;
     } catch (error: any) {
       alert(
         "An error occurred while creating the user. Please try again later."

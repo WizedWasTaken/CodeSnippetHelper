@@ -1,4 +1,3 @@
-// page.tsx
 "use client";
 
 import { useSession } from "@/lib/utils/session";
@@ -51,6 +50,8 @@ export default function SnippetsPage() {
   const [snippetLanguage, setSnippetLanguage] = useState<Language>(
     Language.Any
   );
+  const [snippetLanguageDialog, setSnippetLanguageDialog] =
+    useState<Language>();
   const [description, setDescription] = useState<string>("");
   const session = useSession();
 
@@ -71,13 +72,17 @@ export default function SnippetsPage() {
   }, [selectedLanguage, selectedSortableBy, searchQuery, searchUser]);
 
   function handleCreateSnippet() {
+    if (snippetLanguageDialog === undefined) {
+      alert("Vælg et sprog for snippetet");
+      return;
+    }
     const snippet = new Snippet(
       undefined,
       title,
       code,
       description,
       0,
-      Language.CSS,
+      snippetLanguageDialog,
       new Date(),
       session.session?.user
     );
@@ -111,7 +116,6 @@ export default function SnippetsPage() {
         setTitle("");
         setCode("");
         setDescription("");
-        // setSelectedLanguage(Language.Any);
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
@@ -208,7 +212,11 @@ export default function SnippetsPage() {
                   <Label htmlFor="language" className="text-right">
                     Sprog
                   </Label>
-                  <Select>
+                  <Select
+                    onValueChange={(value) =>
+                      setSnippetLanguageDialog(value as Language)
+                    }
+                  >
                     <SelectTrigger className="col-span-3">
                       <SelectValue placeholder="Vælg et sprog" />
                     </SelectTrigger>
@@ -218,11 +226,7 @@ export default function SnippetsPage() {
                         {languageOptions
                           .filter((lang) => lang !== Language.Any)
                           .map((lang) => (
-                            <SelectItem
-                              key={lang}
-                              onClick={() => setSnippetLanguage(lang)}
-                              value={lang}
-                            >
+                            <SelectItem key={lang} value={lang}>
                               {lang}
                             </SelectItem>
                           ))}
@@ -251,7 +255,9 @@ export default function SnippetsPage() {
         <form className="flex flex-wrap justify-center gap-3 w-full max-w-5xl">
           {/* Language */}
           <div className="w-full sm:w-auto">
-            <Select>
+            <Select
+              onValueChange={(value) => setSelectedLanguage(value as Language)}
+            >
               <SelectTrigger className="w-full sm:w-48">
                 <SelectValue placeholder="Vælg et sprog" />
               </SelectTrigger>
@@ -259,11 +265,7 @@ export default function SnippetsPage() {
                 <SelectGroup>
                   <SelectLabel>Sprog</SelectLabel>
                   {languageOptions.map((lang) => (
-                    <SelectItem
-                      key={lang}
-                      onClick={() => setSelectedLanguage(lang)}
-                      value={lang}
-                    >
+                    <SelectItem key={lang} value={lang}>
                       {lang}
                     </SelectItem>
                   ))}
@@ -273,7 +275,11 @@ export default function SnippetsPage() {
           </div>
           {/* Sortable by */}
           <div className="w-full sm:w-auto">
-            <Select>
+            <Select
+              onValueChange={(value) =>
+                setSelectedSortableBy(value as SortableBy)
+              }
+            >
               <SelectTrigger className="w-full sm:w-48">
                 <SelectValue placeholder="Sorter efter" />
               </SelectTrigger>
@@ -281,11 +287,7 @@ export default function SnippetsPage() {
                 <SelectGroup>
                   <SelectLabel>Sorter efter</SelectLabel>
                   {sortableByOptions.map((sort) => (
-                    <SelectItem
-                      key={sort}
-                      onClick={() => setSelectedSortableBy(sort)}
-                      value={sort}
-                    >
+                    <SelectItem key={sort} value={sort}>
                       {sort}
                     </SelectItem>
                   ))}
