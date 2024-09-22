@@ -35,28 +35,49 @@ export default function UserStatistics() {
   useEffect(() => {
     // Fetch data from the backend based on the selected statistic
     async function fetchData() {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/User/statistics?typeOfStat=${selectedStatistic}`,
-        {
-          method: "POST",
-          headers: {
-            accept: "*/*",
-            "Content-Type": "application/json-patch+json",
-          },
-          body: JSON.stringify({
-            userId: session.session?.user.UserId,
-            name: session.session?.user.Name,
-            email: session.session?.user.Email,
-            password: session.session?.user.Password,
-            createdOn: session.session?.user.CreatedOn,
-          }),
-        }
-      );
-      const result = await response.json();
+      if (
+        !session.session?.user.name ||
+        !session.session?.user.email ||
+        !session.session?.user.password
+      ) {
+        console.log(session.session?.user);
+        console.error("User information is incomplete.");
+        return;
+      }
 
-      setData(result);
-      console.log(result);
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/User/statistics?typeOfStat=${selectedStatistic}`,
+          {
+            method: "POST",
+            headers: {
+              accept: "*/*",
+              "Content-Type": "application/json-patch+json",
+            },
+            body: JSON.stringify({
+              userId: session.session?.user.userId,
+              name: session.session?.user.name,
+              email: session.session?.user.email,
+              password: session.session?.user.password,
+              createdOn: session.session?.user.createdOn,
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error("Error fetching data:", errorData);
+          return;
+        }
+
+        const result = await response.json();
+        setData(result);
+        console.log(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     }
+
     fetchData();
   }, [selectedStatistic]);
 

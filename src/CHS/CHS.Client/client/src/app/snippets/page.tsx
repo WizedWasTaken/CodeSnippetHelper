@@ -1,3 +1,4 @@
+// page.tsx
 "use client";
 
 import { useSession } from "@/lib/utils/session";
@@ -26,7 +27,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Snippet } from "@/entities/Snippet";
-import { Textarea } from "@/components/ui/textarea";
+import SnippetCard from "@/components/pages/Snippet/SnippetCard";
 import SnippetTextarea from "@/components/pages/Snippet/SnippetCodeForm";
 
 enum SortableBy {
@@ -47,6 +48,9 @@ export default function SnippetsPage() {
   const [searchUser, setSearchUser] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [code, setCode] = useState<string>("");
+  const [snippetLanguage, setSnippetLanguage] = useState<Language>(
+    Language.Any
+  );
   const [description, setDescription] = useState<string>("");
   const session = useSession();
 
@@ -73,12 +77,14 @@ export default function SnippetsPage() {
       code,
       description,
       0,
-      Language.JavaScript,
+      Language.CSS,
       new Date(),
       session.session?.user
     );
 
     const snippetJson = JSON.stringify(snippet);
+
+    console.log("Creating snippet:", snippet);
 
     // Send the snippet to the backend
     // API URL: process.env.NEXT_PUBLIC_API_URL/api/Snippet
@@ -105,7 +111,7 @@ export default function SnippetsPage() {
         setTitle("");
         setCode("");
         setDescription("");
-        setSelectedLanguage(Language.Any);
+        // setSelectedLanguage(Language.Any);
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
@@ -113,6 +119,41 @@ export default function SnippetsPage() {
 
     console.log(snippet);
   }
+
+  function sortSnippets(snippets: Snippet[]): Snippet[] {
+    switch (selectedSortableBy) {
+      case SortableBy.Likes:
+        return snippets.sort((a, b) => b.likes - a.likes);
+      case SortableBy.Date:
+        return snippets.sort(
+          (a, b) =>
+            new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()
+        );
+      case SortableBy.Favorites:
+        // Assuming you have a favorites property or a way to determine favorites
+        // return snippets.sort((a, b) => b. - a.favorites);
+        alert("Not implemented");
+      default:
+        return snippets;
+    }
+  }
+
+  const filteredSnippets = snippets.filter(
+    (snippet) =>
+      (selectedLanguage === Language.Any ||
+        snippet.language === selectedLanguage) &&
+      (searchQuery === "" ||
+        snippet.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        snippet.description
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase())) &&
+      (searchUser === "" ||
+        snippet.createdBy?.name
+          .toLowerCase()
+          .includes(searchUser.toLowerCase()))
+  );
+
+  const sortedSnippets = sortSnippets(filteredSnippets);
 
   return (
     <main className="flex flex-col items-center gap-10 py-10 px-5 ">
@@ -179,7 +220,7 @@ export default function SnippetsPage() {
                           .map((lang) => (
                             <SelectItem
                               key={lang}
-                              onClick={() => setSelectedLanguage(lang)}
+                              onClick={() => setSnippetLanguage(lang)}
                               value={lang}
                             >
                               {lang}
@@ -276,25 +317,8 @@ export default function SnippetsPage() {
       <section className="w-full flex flex-col items-center">
         <h2 className="text-2xl font-semibold mb-5">Kodeeksempler</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full max-w-5xl">
-          {snippets.map((snippet) => (
-            <article
-              key={snippet.snippetId}
-              className="bg-slate-400 rounded-md p-4 border flex flex-col"
-            >
-              <h3 className="text-lg font-semibold">{snippet.title}</h3>
-              <p className="text-sm text-gray-300">{snippet.description}</p>
-              <pre className="bg-slate-500 p-2 rounded-md text-sm overflow-x-auto">
-                <code className="language-javascript">{snippet.code}</code>
-              </pre>
-              <div className="flex justify-between items-center">
-                <p className="text-sm text-gray-300">
-                  Oprettet af: {snippet.createdBy?.name}
-                </p>
-                {/* <p className="text-sm text-gray-300">
-                  Oprettet: {snippet.CreatedOn.getDate()}
-                </p> */}
-              </div>
-            </article>
+          {sortedSnippets.map((snippet) => (
+            <SnippetCard key={snippet.snippetId} snippet={snippet} />
           ))}
         </div>
       </section>

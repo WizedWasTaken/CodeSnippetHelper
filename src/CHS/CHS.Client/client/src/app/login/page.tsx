@@ -32,14 +32,14 @@ export default function LoginPage() {
 
     try {
       const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/User/login`;
-      const { UserId, Name, Email, Password } = userObject;
+      const { userId, name, email, password } = userObject;
 
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ UserId, Name, Email, Password }),
+        body: JSON.stringify({ userId, name, email, password }),
       });
 
       if (res.ok) {

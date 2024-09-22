@@ -18,7 +18,7 @@ export default function Profile() {
       </div>
       <div className="text-center md:text-left">
         <h1 className="text-4xl font-bold">
-          Velkommen, {session.session?.user.Name.split(" ")[0]}
+          Velkommen, {session.session?.user.name.split(" ")[0]}
         </h1>
         <p className="text-xl text-gray-200">Du har XX opslag.</p>
       </div>
